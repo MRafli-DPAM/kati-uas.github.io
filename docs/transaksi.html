@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Transaksi - Mobil Express</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+    }
+
+    h1 {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .nav {
+      background-color: #ecf0f1;
+      text-align: center;
+      font-weight: bold;
+      padding: 10px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: #333;
+      margin: 0 10px;
+    }
+
+    form {
+      margin: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    #daftar-belanja {
+      background: #f9f9f9;
+      padding: 10px;
+      margin: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    #daftar-belanja ul {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Mobil Express</h1>
+
+  <div class="nav">
+    <a href="index.html">Beranda</a>
+    <a href="produk.html">Produk</a>
+    <a href="transaksi.html">Transaksi</a>
+    <a href="tentang.html">Tentang</a>
+  </div>
+
+  <h2 style="margin: 20px;">Form Pemesanan</h2>
+
+  <form id="form-pemesanan">
+    <label>Nama:</label>
+    <input type="text" name="nama" required><br>
+
+    <label>Alamat:</label>
+    <input type="text" name="alamat" required><br>
+
+    <label>Produk:</label>
+    <select name="produk" id="produk" required>
+      <option value="">-- Pilih Mobil --</option>
+      <option value="Fortuner" data-harga="500000000">Fortuner</option>
+      <option value="Nissan Z" data-harga="800000000">Nissan Z</option>
+      <option value="Cyberster" data-harga="1000000000">Cyberster</option>
+    </select><br>
+
+    <label>Jumlah:</label>
+    <input type="number" id="jumlah" min="1" value="1"><br>
+
+    <label for="paket">Pilih Paket:</label>
+    <select id="paket" name="paket">
+      <option value="basic">Basic (Tanpa Bonus)</option>
+      <option value="standard">Premium (Coating + PPF)</option>
+      <option value="premium">Premium (Coating + Detailing + PPF + layanan khusus)</option>
+    </select><br><br>
+
+    <button type="button" onclick="tambahTransaksi()">Tambah Pesanan</button>
+  </form>
+
+  <div id="daftar-belanja">
+    <h3>Daftar Pesanan:</h3>
+    <ul id="list-pesanan"></ul>
+    <p><strong>Total Harga: Rp <span id="total-harga">0</span></strong></p>
+  </div>
+
+  <script>
+    let total = 0;
+
+    function tambahTransaksi() {
+      const produkSelect = document.getElementById("produk");
+      const selectedOption = produkSelect.options[produkSelect.selectedIndex];
+      const namaProduk = selectedOption.value;
+      const hargaProduk = parseInt(selectedOption.getAttribute("data-harga"));
+      const jumlah = parseInt(document.getElementById("jumlah").value);
+      const paket = document.getElementById("paket").value;
+
+      if (!namaProduk || !jumlah || jumlah < 1) {
+        alert("Pilih produk dan jumlah yang valid!");
+        return;
+      }
+
+      const subtotal = hargaProduk * jumlah;
+
+      const list = document.getElementById("list-pesanan");
+      const item = document.createElement("li");
+      item.textContent = `${namaProduk} (${paket}) x ${jumlah} = Rp ${subtotal.toLocaleString()}`;
+      list.appendChild(item);
+
+      total += subtotal;
+      document.getElementById("total-harga").textContent = total.toLocaleString();
+
+      // Reset produk dan jumlah
+      produkSelect.selectedIndex = 0;
+      document.getElementById("jumlah").value = 1;
+    }
+  </script>
+
+</body>
+</html>
